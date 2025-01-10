@@ -1,0 +1,36 @@
+.inner {
+    padding-top: 15px;
+    padding-left: 55px;
+}
+
+.form-edit-profile label {
+    margin-top: 10px;
+    display: block;
+    font-size: 17px;
+}
+
+.form-edit-profile input {
+    margin-bottom: 10px;
+    font-size: 17px;
+    padding: 5px;
+}
+
+.form-edit-profile img {
+    max-height: 128px;
+}
+
+.invite-staff-form .btn {
+    float: left;
+    width: inherit !important;
+    min-width: inherit !important;
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 0 !important;
+}
+.invite-staff-form .back-link {
+    float: left;
+    display: block;
+    margin: 23px 0 0 10px;
+    color: #fff !important;
+    font-size: 12px;
+}

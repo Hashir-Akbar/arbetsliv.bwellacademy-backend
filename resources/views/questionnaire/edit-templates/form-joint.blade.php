@@ -1,0 +1,1 @@
+@include('questionnaire.edit-templates._base', array('factors' => $factors))

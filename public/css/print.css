@@ -1,0 +1,31 @@
+.sidebar,
+.sidepanel,
+.print-btn,
+.head {
+    display: none;
+}
+
+.page-header {
+    display: none;
+}
+
+.content-body {
+    margin-left: 0;
+    margin-right: 0 !important;
+}
+
+.subquestion {
+    margin: 0px !important;
+}
+
+.page .questions ol .subquestion {
+    margin: 0px !important;
+}
+
+.button-container {
+    display: none;
+}
+
+.warning {
+    display: none;
+}

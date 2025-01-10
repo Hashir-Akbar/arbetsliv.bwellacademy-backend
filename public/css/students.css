@@ -1,0 +1,243 @@
+h4 {
+    padding-left: 55px;
+}
+
+.factor-unknown {
+    color: #000;
+}
+
+.inner {
+    padding-right: 55px;
+}
+
+table {
+    font-size: 1em;
+    width: 100%;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+    padding: 8px;
+    vertical-align: top;
+    border-top: 1px solid #8a8a8a;
+}
+
+table > thead > tr > th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #8a8a8a;
+}
+
+table > caption + thead > tr:first-child > th,
+table > caption + thead > tr:first-child > td,
+table > colgroup + thead > tr:first-child > th,
+table > colgroup + thead > tr:first-child > td,
+table > thead:first-child > tr:first-child > th,
+table > thead:first-child > tr:first-child > td {
+    border-top: 0;
+}
+
+table .odd {
+    background-color: #f0f0f0;
+}
+
+table .even {
+    background-color: #fefefe;
+}
+
+table.table-students .first_name,
+table.table-students .last_name,
+table.table-students .sex,
+table.table-students .dob {
+    padding-top: 12px;
+}
+table.table-students .row-actions {
+    padding-top: 8px;
+    width: 1px;
+    white-space: nowrap;
+}
+table.table-students .row-actions .btn {
+    margin-bottom: 2px;
+}
+table.table-students .profiles ul {
+    list-style: none;
+    padding: 0 !important;
+}
+
+table.table-users a.edit-link {
+    display: inline-block;
+    margin-bottom: 2px;
+}
+table.table-users a.remove-link {
+    display: inline-block;
+    margin-bottom: 2px;
+}
+table.table-users tbody tr td.first_name,
+table.table-users tbody tr td.last_name,
+table.table-users tbody tr td.sex,
+table.table-users tbody tr td.dob,
+table.table-users tbody tr td.role,
+table.table-users tbody tr td.emailu {
+    padding: 12px 8px 8px;
+}
+
+.show-profiles:focus {
+    outline: none !important;
+}
+
+table.table-customers tbody .row-actions a {
+    display: inline-block;
+}
+table.table-customers tbody .name,
+table.table-customers tbody .email,
+table.table-customers tbody .phone {
+    padding-top: 12px;
+}
+
+table.table-customers tbody tr td table.table-units {
+    margin: 10px 0 20px 0;
+    width: 100%;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border: 1px solid #386782;
+}
+table.table-customers tbody tr td table.table-units thead {
+    background: #fff;
+}
+table.table-customers tbody tr td table.table-units tbody {
+    background: #fff;
+}
+table.table-customers tbody tr td table.table-units tbody .staff ul,
+table.table-customers tbody tr td table.table-units tbody .sections ul {
+    list-style: none;
+    padding-left: 0 !important;
+}
+table.table-customers tbody tr td table.table-units tbody .staff ul .remove,
+table.table-customers tbody tr td table.table-units tbody .sections ul .remove {
+    line-height: 16px;
+}
+.customer-units {
+    background: #5b88a7;
+}
+
+table.table-groups tbody .row-actions a,
+table.list-questionnaire-pages tbody .row-actions a {
+    display: inline-block;
+}
+
+table.list-questionnaire-pages tbody .name ul {
+    padding-left: 35px;
+    margin-top: 5px !important;
+}
+table.list-questionnaire-pages tbody .name ul li a.remove-group-link {
+    color: #f00;
+}
+table.list-questionnaire-pages tbody .name a {
+    min-width: inherit !important;
+    max-width: inherit !important;
+}
+
+.table-customers {
+    width: 100%;
+    margin: 0;
+}
+
+td.sections ul {
+    list-style: none !important;
+    padding: 0 !important;
+}
+td.sections ul li a.remove {
+    line-height: 13px;
+}
+td.sections li {
+    max-width: 85%;
+}
+
+table.table-units tbody .row-actions a {
+    display: inline-block;
+}
+table.table-units tbody .name,
+table.table-units tbody .email,
+table.table-units tbody .phone {
+    padding-top: 12px;
+}
+table.table-units td.staff ul {
+    list-style: none;
+    padding-left: 0 !important;
+}
+
+table.table-students .btn {
+    display: inline-block;
+    min-width: 50px;
+}
+
+.customer-search-container,
+.students-search-container,
+.users-search-container {
+    float: right;
+}
+.customer-search-container .btn,
+.students-search-container .btn,
+.users-search-container .btn {
+    min-width: 20px;
+    margin-bottom: 0;
+}
+
+.edit-section-link,
+.remove-section-link {
+    transition: opacity 0.2s ease;
+    -webkit-transition: opacity 0.2s ease;
+    float: right;
+}
+
+.edit-section-link:hover,
+.remove-section-link:hover {
+    opacity: 0.5;
+    text-decoration: none;
+}
+
+.show-staff-info-link {
+    display: inline-block;
+    margin-bottom: 0.8em;
+}
+
+.responsive-table {
+    clear: both;
+}
+
+select#customers {
+    position: relative;
+    top: 1px;
+    height: 27px;
+    min-width: 250px;
+}
+select#units {
+    position: relative;
+    top: 1px;
+    height: 27px;
+    min-width: 250px;
+}
+select#sections {
+    position: relative;
+    top: 1px;
+    height: 27px;
+    min-width: 250px;
+}
+input#search {
+    height: 27px;
+}
+
+.section-actions {
+    margin-bottom: 20px;
+}
+
+.actions-info {
+    margin: 20px 0;
+    font-weight: 700;
+}
+
+.no-students {
+    margin-top: 40px;
+}
