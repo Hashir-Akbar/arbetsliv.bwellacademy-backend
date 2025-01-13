@@ -14,3 +14,4 @@ yarn-error.log
 .htaccess
 /public/.htaccess
 *.tgz
+*.sql
