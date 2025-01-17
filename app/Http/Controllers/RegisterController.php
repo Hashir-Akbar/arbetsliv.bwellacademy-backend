@@ -67,13 +67,20 @@ class RegisterController extends Controller
                 ->withInput();
         }
 
+        $id = $request->input('id');
+        $section = Section::findOrFail($id);
+
+        if ($section->secret_code != $request->input('secret_code')) {
+            return back()->withErrors(['secret_code' => 'Secret Code is incorrect.'])->withInput();
+        }
+
         $user = new User;
 
         $user->first_name = $request->input('first_name');
         $user->last_name = $request->input('last_name');
         $user->email = $request->input('email');
-        $user->birth_date = \Carbon\Carbon::parse($request->input('first_name'));
-        $user->section_id = $request->input('id');
+        $user->birth_date = \Carbon\Carbon::parse($request->input('birth_date'));
+        $user->section_id = $id;
         $user->password = Hash::make($request->input('password'));
         $user->save();
 
