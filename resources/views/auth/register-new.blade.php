@@ -19,7 +19,7 @@
     <div class="login-form">
         <div class="gradient"></div>
         <div class="container">
-            {{ Form::open(array('url' => '/complete', 'method' => 'post', 'class' => 'form-register')) }}
+            {{ Form::open(array('url' => '/register', 'method' => 'post', 'class' => 'form-register')) }}
 
                 <h1>{{ __('register.registration') }} for {{$section->name}}</h1>
 
@@ -30,16 +30,25 @@
                 </div>
                 @endif
 
-                {{ Form::text('first_name', array('class' => 'form-control')) }}
-                {{ Form::text('last_name', array('class' => 'form-control')) }}
+                {{ Form::hidden('id', $id) }}
 
-                {{ Form::label('email', __('register.email')) }}
-                {{ Form::email('email', array('class' => 'form-control')) }}
+                {{ Form::text('first_name', null, array('placeholder' =>'First Name', 'class' => 'form-control')) }}
+                {{ Form::text('last_name', null, array('placeholder' =>'Last Name','class' => 'form-control')) }}
+
+                {{ Form::email('email', null, array('placeholder' => __('register.email'), 'class' => 'form-control')) }}
+
+                {{ Form::text('birth_date', null, array('placeholder' => 'åååå-mm-dd', 'class' => 'form-control')) }}
+
+                {{ Form::select("sex", [
+                    'U' => 'Okänt',
+                    'M' => t("general.male"),
+                    'F' => t("general.female")
+                ], 'sex' ?? 'U', ['class' => 'form-control']) }}
 
                 {{ Form::password('password', array('placeholder' => __('register.password'), 'class' => 'password-field form-control', 'required', 'autofocus')) }}               
                 {{ Form::password('password_confirm', array('placeholder' => __('register.password_confirm'), 'class' => 'password-field2 form-control', 'required')) }}
 
-                {{ Form::text('code', array('class' => 'form-control')) }}
+                {{ Form::text('secret_code', null, array('placeholder' =>'Secret Code','class' => 'form-control')) }}
 
                 {{ Form::submit(__('register.submit'), array('class' => 'btn')) }}
 

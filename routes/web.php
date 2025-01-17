@@ -19,7 +19,7 @@ Route::get('complete', 'RegisterController@getComplete');
 Route::post('complete', 'RegisterController@postComplete');
 
 Route::get('register', 'RegisterController@getRegister');
-Route::get('register', 'RegisterController@postRegister');
+Route::post('register', 'RegisterController@postRegister');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/', 'HomeController@getIndex');
