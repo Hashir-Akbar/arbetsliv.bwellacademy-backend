@@ -12,11 +12,6 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-use Inertia\Inertia;
-
-Route::get('/home', function () {
-    return Inertia::render('Home');
-});
 
 Route::get('lang/{locale}', 'LocalizationController@index');
 
