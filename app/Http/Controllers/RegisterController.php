@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Section;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -28,6 +29,19 @@ class RegisterController extends Controller
         ];
 
         return view('auth.register', $data);
+    }
+
+    public function getRegister(Request $request)
+    {
+        $id = $request->input('id');
+
+        $section = Section::findOrFail($id);
+
+        $data = [
+            'section' => $section,
+        ];
+
+        return view('auth.register-new', $data);
     }
 
     public function postComplete(Request $request)

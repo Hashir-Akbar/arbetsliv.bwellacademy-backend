@@ -22,6 +22,7 @@ return [
     'edit' => 'Ändra',
     'remove' => 'Ta bort',
     'archive' => 'Arkivera',
+    'qr' => 'QR',
 
     'yes' => 'Ja',
     'no' => 'Nej',

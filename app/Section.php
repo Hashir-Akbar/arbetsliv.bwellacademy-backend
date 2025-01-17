@@ -10,7 +10,7 @@ class Section extends Model
 {
     public $timestamps = true;
 
-    protected $fillable = ['archived_at'];
+    protected $fillable = ['archived_at', 'secret_code', 'qr_code'];
 
     protected static function booted()
     {

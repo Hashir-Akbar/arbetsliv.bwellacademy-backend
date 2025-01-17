@@ -18,6 +18,9 @@ Route::get('lang/{locale}', 'LocalizationController@index');
 Route::get('complete', 'RegisterController@getComplete');
 Route::post('complete', 'RegisterController@postComplete');
 
+Route::get('register', 'RegisterController@getRegister');
+Route::get('register', 'RegisterController@postRegister');
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/', 'HomeController@getIndex');
 
@@ -155,6 +158,8 @@ Route::middleware(['auth'])->group(function () {
 
             Route::get('{id}/archive', 'SectionController@getArchive');
             Route::post('{id}/archive', 'SectionController@postArchive');
+
+            Route::get('{id}/qr', 'SectionController@getQr');
 
             Route::get('{section_id}/reginfo', 'StudentController@getRegInfoSection');
 
