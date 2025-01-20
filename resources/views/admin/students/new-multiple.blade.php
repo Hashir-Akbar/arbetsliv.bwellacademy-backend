@@ -9,6 +9,14 @@
 @stop
 
 @section('content')
+<style>
+    .info-form, .secret-code-container {
+    display: block;
+    width: 100%; /* Optional: Ensures they take up the full width */
+    clear: both; /* Clears any floating elements */
+}
+</style>
+    <div style="margin-bottom: 100px;">
     {{ Form::open(array('action' => array("StudentController@postNewMultiple", $section->id), 'class' => 'info-form new-multiple-students-form')) }}
 
     <div>
@@ -110,6 +118,21 @@
     <a class="back-link" href="{{ url('/students?section=' . $section->id) }}">Avbryt</a>
 
     {{ Form::close() }}
+    </div>
+
+    <div>
+        <h2>Use the QR Code and Secret Code to let users create their own profile.</h2>
+        <h3>
+            Secret Code: <strong>{{ $section->secret_code }}</strong>
+        </h3>
+        <h3>
+            QR Code: </em>
+        </h3>
+
+        <div>
+            <img src="data:image/png;base64,{{ base64_encode($qr_code) }}" alt="QR Code">
+        </div>
+    </div>
 
     <script>
         $("#add-row").click(function()

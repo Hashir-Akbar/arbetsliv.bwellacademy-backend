@@ -107,7 +107,6 @@
                             <a class="btn btn-outline" href="{{ url('/admin/sections/' . $section->id . '/edit') }}">{{ __('general.edit') }}</a>
                             <a class="btn btn-danger btn-outline" href="{{ url('/admin/sections/' . $section->id . '/delete') }}">{{ __('general.remove') }}</a>
                             <a class="btn btn-danger btn-outline" href="{{ url('/admin/sections/' . $section->id . '/archive') }}">{{ __('general.archive') }}</a>
-                            <a class="btn btn-danger btn-outline" href="{{ url('/admin/sections/' . $section->id . '/qr') }}">{{ __('general.qr') }}</a>
                         @endif
                     </td>
                 </tr>

@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
 
 class StudentController extends Controller
 {
@@ -160,9 +162,22 @@ class StudentController extends Controller
             abort(403);
         }
 
+        if (is_null($section->secret_code)) {
+            $section->secret_code = strtoupper(Str::random(5)); // Generate a random secret code of 5 uppercase characters
+            $section->save();
+        }
+
+        $qrCode = new QrCode(config('app.url') . '/register?id=' . $section_id);
+        $writer = new PngWriter();
+        $result = $writer->write($qrCode);
+
+        // Store the QR code string in the section
+        $qr_code = $result->getString();
+
         $data = [
             'section' => $section,
             'pageWithForm' => true,
+            'qr_code' => $qr_code,
         ];
 
         return view('admin.students.new-multiple', $data);
