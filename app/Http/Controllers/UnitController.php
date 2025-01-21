@@ -6,9 +6,11 @@ use App\BusinessCategory;
 use App\Country;
 use App\County;
 use App\Unit;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\App;
 
 class UnitController extends Controller
 {
@@ -100,15 +102,18 @@ class UnitController extends Controller
 
     public function postNew(Request $request)
     {
-        $user = Auth::user();
-        if (! $user->isSuperAdmin()) {
+        $currentUser = Auth::user();
+        if (! $currentUser->isSuperAdmin()) {
             abort(403);
         }
 
         $rules = [
             'name' => 'required',
             'country' => 'required',
-            'county' => 'required',
+            // 'county' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'email|required',
         ];
 
         if (config('fms.type') == 'school') {
@@ -119,6 +124,15 @@ class UnitController extends Controller
 
         if ($validator->fails()) {
             return back()->withErrors($validator)->withInput($request->all());
+        }
+
+        $exists = User::where('email', $request->get('email'))->count() > 0;
+        if ($exists) {
+            if (App::isLocale('en')) {
+                return back()->withErrors(['email' => 'A user with this email address already exists.'])->withInput();
+            } else {
+                return back()->withErrors(['email' => 'Det finns redan en användare med denna epostadress.'])->withInput();
+            }
         }
 
         $unit = new Unit;
@@ -132,7 +146,37 @@ class UnitController extends Controller
         $unit->business_category_id = $request->get('business_category') ?? null;
         $unit->save();
 
+        $user = new User;
+
+        $user->registration_code = generate_reg_code();
+
+        $user->is_admin = true;
+        $user->is_staff = true;
+
+        $user->unit_id = $unit->id;
+
+        $user->first_name = $request->get('first_name');
+        $user->last_name = $request->get('last_name');
+        $user->email = $request->get('email');
+
+        $user->save();
+
+        $this->sendEmail($user);
+
         return redirect(url('/admin/units'));
+    }
+
+    public function sendEmail($user)
+    {
+        $name = $user->first_name;
+        $data = [
+            'id' => $user->id,
+            'name' => $user->first_name,
+            'code' => $user->registration_code,
+            'from-email' => true,
+        ];
+
+        sendEmailToUser('emails.auth.staff_logins', 'emails.auth-staff_logins', $data, $user, compact('name'));
     }
 
     public function getEdit($id)
@@ -173,7 +217,7 @@ class UnitController extends Controller
         $rules = [
             'name' => 'required',
             'country' => 'required',
-            'county' => 'required',
+            // 'county' => 'required',
         ];
 
         if (config('fms.type') == 'school') {

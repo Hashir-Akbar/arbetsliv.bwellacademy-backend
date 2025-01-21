@@ -93,6 +93,24 @@ Ny skola
             <input name="phone" id="phone" type="text" value="{{ Request::old('phone') }}">
         </div>
 
+        @if ($errors->has('first_name'))
+        <span class="errors">{{ $errors->first('first_name') }}</span>
+        @endif
+        <label for="first_name">Admin Förnamn *</label>
+        <input type="text" name="first_name" value="{{ Request::old('first_name') }}" required><br>
+
+        @if ($errors->has('last_name'))
+        <span>{{ $errors->first('last_name') }}</span>
+        @endif
+        <label for="last_name">Admin Efternamn *</label>
+        <input type="text" name="last_name" value="{{ Request::old('last_name') }}" required><br>
+
+        @if ($errors->has('email'))
+        <span>{{ $errors->first('email') }}</span>
+        @endif
+        <label for="email">Admin Emailadress *</label>
+        <input type="text" name="email" value="{{ Request::old('email') }}" required><br>
+
         <div>
             {{ Form::submit('Skapa', array('class' => 'btn')) }}
 
