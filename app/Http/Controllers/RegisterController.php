@@ -82,6 +82,7 @@ class RegisterController extends Controller
         $user->birth_date = \Carbon\Carbon::parse($request->input('birth_date'));
         $user->section_id = $id;
         $user->password = Hash::make($request->input('password'));
+        $user->qr_signup = true;
         $user->save();
 
         return redirect(url('/'));

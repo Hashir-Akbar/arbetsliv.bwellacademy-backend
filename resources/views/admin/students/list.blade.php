@@ -57,6 +57,7 @@
                         <th><a href="{{ url($urlPrefix . 'sort=sex&type=' . ($sortType === 'asc' && $sort === 'sex' ? 'desc' : 'asc')) }}">{{ __('general.sex') }}</a></th>
                         <th><a href="{{ url($urlPrefix . 'sort=birth_date&type=' . ($sortType === 'asc' && $sort === 'birth_date' ? 'desc' : 'asc')) }}">{{ __('general.birth_date') }}</a></th>
                         <th><a href="{{ url($urlPrefix . 'sort=is_test&type=' . ($sortType === 'asc' && $sort === 'is_test' ? 'desc' : 'asc')) }}">Test</a></th>
+                        <th><a href="{{ url($urlPrefix . 'sort=is_test&type=' . ($sortType === 'asc' && $sort === 'is_test' ? 'desc' : 'asc')) }}">QR Signup</a></th>
                         @if (!$showingSection)
                             <th>{{ __('students.section') }}</th>
                         @endif
@@ -74,6 +75,7 @@
                                 {{ \Carbon\Carbon::parse($student->birth_date)->toDateString() }}
                             </td>
                             <td>{{ $student->is_test ? 'Ja' : 'Nej' }}</td>
+                            <td>{{ $student->qr_signup ? 'Ja' : 'Nej' }}</td>
                             @if (!$showingSection)
                                 <td>
                                     @if (!is_null($student->section))
