@@ -82,7 +82,9 @@
                                 </td>
                             @endif
                             <td class="row-actions">
+                                @if ($user->isSuperAdmin())
                                 <a class="btn" href="{{ url('/user/' . $student->id . '/info') }}">{{ __('students.show') }}</a>
+                                @endif
                                 @if ($user->canDo('create_students'))
                                     <a class="btn" href="{{ url('/admin/students/' . $student->id . '/reginfo') }}">{{ __('students.code') }}</a> 
                                     <a class="btn" href="{{ url('/admin/students/' . $student->id . '/edit') }}">{{ __('general.edit') }}</a> 

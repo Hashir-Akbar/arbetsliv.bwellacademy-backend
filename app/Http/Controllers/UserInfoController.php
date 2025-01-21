@@ -65,6 +65,9 @@ class UserInfoController extends Controller
             $canSee = true;
             $canSeeEverything = true;
         } else {
+            if ($user->isAdmin()) {
+                return view('user_info.access_denied');
+            }
             if (! $user->isStaffOf($student)) {
                 return view('user_info.access_denied');
             }
