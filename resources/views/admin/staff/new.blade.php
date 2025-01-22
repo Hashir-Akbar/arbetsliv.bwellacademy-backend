@@ -31,7 +31,7 @@ Ny personal till {{ $unit->name }}
 
     <label for="roles">Roller</label><br>
     <select id="roles" name="roles[]" multiple="multiple">
-        <option value="admin" {{ in_array('admin', Request::old('roles') ?? []) ? 'selected="selected"' : '' }}>{{ __('roles.admin') }}</option>
+        <option value="admin" {{ in_array('admin', Request::old('roles') ?? []) ? 'selected="selected"' : '' }}>{{ __('roles.staff') }}</option>
         @if ($currentUser->isSuperAdmin())
             <option value="nurse" {{ in_array('nurse', Request::old('roles') ?? []) ? 'selected="selected"' : '' }}>{{ __('roles.nurse') }}</option>
             <option value="physical_trainer" {{ in_array('physical_trainer', Request::old('roles') ?? []) ? 'selected="selected"' : '' }}>{{ __('roles.physical_trainer') }}</option>

@@ -31,7 +31,7 @@
 
     <label for="roles">Roller</label><br>
     <select id="roles" name="roles[]" multiple="multiple">
-        <option value="admin" {{ $user->is_admin ? 'selected="selected"' : '' }}>{{ __('roles.admin') }}</option>
+        <option value="admin" {{ $user->is_admin ? 'selected="selected"' : '' }}>{{ __('roles.staff') }}</option>
         @if ($currentUser->isSuperAdmin())
             <option value="nurse" {{ $user->is_nurse ? 'selected="selected"' : '' }}>{{ __('roles.nurse') }}</option>
             <option value="physical_trainer" {{ $user->is_physical_trainer ? 'selected="selected"' : '' }}>{{ __('roles.physical_trainer') }}</option>
