@@ -36,6 +36,8 @@ class StudentController extends Controller
             $sections = Section::where('unit_id', $user->unit_id)->get();
         }
 
+        $data['sections'] = $sections;
+
         if ($units->count() < 1) {
             return view('admin.students.no-units');
         }

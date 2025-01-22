@@ -46,6 +46,22 @@
             @endif
         </div>
     </div>
+    <select name="section" id="section-select">
+        <option value="" {{ is_null(optional($section ?? null)->id) ? 'selected' : '' }}>
+            Select Department
+        </option>
+        @foreach ($sections as $iterSection)
+            <option value="{{ $iterSection->id }}" {{ $iterSection->id == optional($section ?? null)->id ? 'selected' : '' }}>
+                {{ $iterSection->full_name() }}
+            </option>
+        @endforeach
+    </select>
+    <script>
+        document.getElementById('section-select').addEventListener('change', function() {
+            var sectionId = this.value;
+            window.location.href = '/admin/students?section=' + sectionId;
+        });
+    </script>
     @if (count($students) > 0)
         <div class="responsive-table">
             <table class="table-students">
