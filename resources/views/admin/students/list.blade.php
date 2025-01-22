@@ -17,7 +17,23 @@
 @stop
 
 @section('content')
-    <div class="students-search-container" style="float:right">
+    <div class="students-search-container" style="float:right; display: flex;">
+        <select name="section" id="section-select" style="margin-right: 10px;">
+            <option value="" {{ is_null(optional($section ?? null)->id) ? 'selected' : '' }}>
+                Select Department
+            </option>
+            @foreach ($sections as $iterSection)
+                <option value="{{ $iterSection->id }}" {{ $iterSection->id == optional($section ?? null)->id ? 'selected' : '' }}>
+                    {{ $iterSection->full_name() }}
+                </option>
+            @endforeach
+        </select>
+        <script>
+            document.getElementById('section-select').addEventListener('change', function() {
+                var sectionId = this.value;
+                window.location.href = '/admin/students?section=' + sectionId;
+            });
+        </script>
         <form id="students-search-form" action="{{ url('/admin/students') }}" method="GET"> 
             @if ($showingSection)
             <input type="hidden" name="section" value="{{ $section->id }}">
@@ -30,8 +46,8 @@
         <div>
             @if ($showingSection || !empty($search))
                 <a href="{{ url('/admin/students') }}" class="btn">{{ __('students.show-all') }}</a>
-            @else
-                <a href="{{ url('/admin/sections') }}" class="btn">{{ __('students.select-section') }}</a>
+            {{-- @else
+                <a href="{{ url('/admin/sections') }}" class="btn">{{ __('students.select-section') }}</a> --}}
             @endif
             @if ($user->canDo('create_students'))
                 @if ($showingSection)
@@ -46,22 +62,7 @@
             @endif
         </div>
     </div>
-    <select name="section" id="section-select">
-        <option value="" {{ is_null(optional($section ?? null)->id) ? 'selected' : '' }}>
-            Select Department
-        </option>
-        @foreach ($sections as $iterSection)
-            <option value="{{ $iterSection->id }}" {{ $iterSection->id == optional($section ?? null)->id ? 'selected' : '' }}>
-                {{ $iterSection->full_name() }}
-            </option>
-        @endforeach
-    </select>
-    <script>
-        document.getElementById('section-select').addEventListener('change', function() {
-            var sectionId = this.value;
-            window.location.href = '/admin/students?section=' + sectionId;
-        });
-    </script>
+
     @if (count($students) > 0)
         <div class="responsive-table">
             <table class="table-students">
