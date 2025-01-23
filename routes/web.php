@@ -214,3 +214,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('selection/{cacheId}', 'StatsController@getSelection');
     });
 });
+
+
+// first show all companies in employees page and upon selection allow the user to select any department

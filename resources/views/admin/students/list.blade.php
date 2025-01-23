@@ -28,10 +28,27 @@
                 </option>
             @endforeach
         </select>
+        <select name="unit" id="unit-select" style="margin-right: 10px;">
+            <option value="" {{ is_null(optional($section ?? null)->unit_id) ? 'selected' : '' }}>
+                Select Company
+            </option>
+            @foreach ($units as $iterUnit)
+                <option value="{{ $iterUnit->id }}" {{ $iterUnit->id == optional($section ?? null)->unit_id ? 'selected' : '' }}>
+                    {{ $iterUnit->name }}
+                </option>
+            @endforeach
+        </select>
         <script>
             document.getElementById('section-select').addEventListener('change', function() {
                 var sectionId = this.value;
-                window.location.href = '/admin/students?section=' + sectionId;
+                var unitId = document.getElementById('unit-select').value;
+                window.location.href = '/admin/students?section=' + sectionId + '&unit=' + unitId;
+            });
+
+            document.getElementById('unit-select').addEventListener('change', function() {
+                var unitId = this.value;
+                var sectionId = document.getElementById('section-select').value;
+                window.location.href = '/admin/students?section=' + sectionId + '&unit=' + unitId;
             });
         </script>
         <form id="students-search-form" action="{{ url('/admin/students') }}" method="GET"> 

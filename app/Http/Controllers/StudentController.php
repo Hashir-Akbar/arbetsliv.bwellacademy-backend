@@ -37,6 +37,7 @@ class StudentController extends Controller
         }
 
         $data['sections'] = $sections;
+        $data['units'] = $units;
 
         if ($units->count() < 1) {
             return view('admin.students.no-units');
@@ -101,7 +102,16 @@ class StudentController extends Controller
             }
         }
 
-        if ($request->has('section')) {
+        if ($request->has('unit')) {
+
+
+
+        }
+
+
+
+        if ($request->has('section') && !empty($request->query('section'))) {
+
             $section = Section::findOrFail($request->query('section'));
 
             // make sure we have access to the section
@@ -116,6 +126,7 @@ class StudentController extends Controller
 
             $data['showingSection'] = true;
             $data['section'] = $section;
+        } elseif ($request->has('unit')) {
         } else {
             $data['showingSection'] = false;
         }
