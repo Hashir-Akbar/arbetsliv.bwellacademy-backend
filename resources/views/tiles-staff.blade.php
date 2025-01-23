@@ -18,14 +18,14 @@ Välkommen {{ $user->full_name() }}
             <option>Engineering</option>
         </select>
     </div>
-    <div class="charts-container">
+    <div class="charts-container" style="margin-bottom: 20px;">
         <div class="chart-card" style="display: flex; align-items: center; justify-content: space-between;">
             <div style="width: 30%;">
                 <h3 class="chart-title">Anställda</h3>
                 <canvas id="donutChart"></canvas>
             </div>
             <div style="width: 60%;">
-                <h3 class="chart-title">Users by Category</h3>
+                <h3 class="chart-title ">Users by Category</h3>
                 <canvas id="barChart"></canvas>
             </div>
         </div>
@@ -114,7 +114,6 @@ Välkommen {{ $user->full_name() }}
             datasets: [{
                 data: [45, 55],
                 backgroundColor: ['#3276fb', '#f75895'],
-                hoverBackgroundColor: ['#5A67D8', '#F56565'],
                 borderWidth: 2,
                 borderColor: '#ffffff'
             }]
@@ -145,14 +144,12 @@ Välkommen {{ $user->full_name() }}
                     label: 'Male',
                     data: [90, 50, 30],
                     backgroundColor: '#3276fb',
-                    hoverBackgroundColor: '#5A67D8',
                     borderRadius: 5,
                 },
                 {
                     label: 'Female',
                     data: [60, 40, 20],
                     backgroundColor: '#f75895',
-                    hoverBackgroundColor: '#F56565',
                     borderRadius: 5,
                 }
             ]
@@ -199,14 +196,12 @@ Välkommen {{ $user->full_name() }}
                     label: 'Data Set 1',
                     data: Array.from({length: 15}, () => Math.floor(Math.random() * 100)),
                     backgroundColor: '#3276fb',
-                    hoverBackgroundColor: '#5A67D8',
                     borderRadius: 5,
                 },
                 {
                     label: 'Data Set 2',
                     data: Array.from({length: 15}, () => Math.floor(Math.random() * 100)),
                     backgroundColor: '#f75895',
-                    hoverBackgroundColor: '#F56565',
                     borderRadius: 5,
                 }
             ]
