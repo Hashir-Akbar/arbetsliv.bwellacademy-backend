@@ -17,7 +17,7 @@
 @stop
 
 @section('content')
-<div class="students-search-container" style="float:right">
+<div class="students-search-container" style="float:right; display: flex;">
     <select name="unit" id="unit-select" style="margin-right: 10px;">
         <option value="" {{ is_null(optional($section ?? null)->unit_id) ? 'selected' : '' }}>
             Select Company
@@ -52,19 +52,19 @@
     <div>
         @if ($user->isSuperAdmin())
             @if ($showingUnit || !empty($search))
-                <a href="{{ url('/admin/sections') }}" class="btn">{{ __('sections.show-all') }}</a>
+                <a href="{{ url('/admin/sections') }}" class="btn" style="margin-right: 10px;">{{ __('sections.show-all') }}</a>
             @else
-                <a href="{{ url('/admin/units') }}" class="btn">{{ __('sections.select-unit') }}</a>
+                <!-- <a href="{{ url('/admin/units') }}" class="btn">{{ __('sections.select-unit') }}</a> -->
             @endif
         @else
             @if (!empty($search))
-                <a href="{{ url('/admin/sections') }}" class="btn">{{ __('sections.show-all') }}</a>
+                <a href="{{ url('/admin/sections') }}" class="btn" style="margin-right: 10px;">{{ __('sections.show-all') }}</a>
             @endif
         @endif
 
         @if ($user->isSuperAdmin() || $user->isAdmin())
             @if ($showingUnit)
-                <a href="{{ url('/admin/units/' . $unit->id . '/sections/new') }}" class="btn">{{ __('sections.new') }}</a>
+                <a href="{{ url('/admin/units/' . $unit->id . '/sections/new') }}" class="btn" style="margin-right: 10px;">{{ __('sections.new') }}</a>
             @else
                 <div class="actions-info">
                     {{ __('sections.select-unit-info') }}
