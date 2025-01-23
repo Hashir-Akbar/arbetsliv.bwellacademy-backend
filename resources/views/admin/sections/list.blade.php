@@ -18,6 +18,23 @@
 
 @section('content')
 <div class="students-search-container" style="float:right">
+    <select name="unit" id="unit-select" style="margin-right: 10px;">
+        <option value="" {{ is_null(optional($section ?? null)->unit_id) ? 'selected' : '' }}>
+            Select Company
+        </option>
+        @foreach ($units as $iterUnit)
+            <option value="{{ $iterUnit->id }}" {{ $iterUnit->id == optional($unit ?? null)->id ? 'selected' : '' }}>
+                {{ $iterUnit->name }}
+            </option>
+        @endforeach
+    </select>
+    <script>
+            document.getElementById('unit-select').addEventListener('change', function() {
+                var unitId = this.value;
+                var sectionId = document.getElementById('unit-select').value;
+                window.location.href = '/admin/sections?unit=' + unitId;
+            });
+    </script>
     <form id="students-search-form" action="{{ url('/admin/sections') }}" method="GET" style="display: flex; align-items: center;">
         <label for="show-archived" style="display: flex; align-items: center; margin-right: 20px;">
             <input type="checkbox" id="show-archived" value="1" name="show-archived" {!! ($showArchived ? 'checked' : '') !!}>

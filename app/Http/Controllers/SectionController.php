@@ -79,6 +79,7 @@ class SectionController extends Controller
             'active' => 'sections',
             'user' => $user,
             'unit' => $unit,
+            'units' => $units,
             'showingUnit' => ! is_null($unit),
             'sections' => $sections,
             'sort' => $sort,
