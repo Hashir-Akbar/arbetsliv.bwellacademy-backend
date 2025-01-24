@@ -14,7 +14,7 @@
         </p>
         <hr style="width: 325px; float: left">
         <p style="clear: left">
-            Acki Wästlund<br>
+            Acki Wästlu<br>
             Bewell Academy AB<br>
             VD, grundare<br>
             acki@bwellacademy.com<br>
