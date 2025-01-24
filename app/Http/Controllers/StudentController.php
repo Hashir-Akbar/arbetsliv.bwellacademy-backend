@@ -36,6 +36,13 @@ class StudentController extends Controller
             $sections = Section::where('unit_id', $user->unit_id)->get();
         }
 
+  // Update to filter sections by unit if unit is specified in the request
+  if ($request->has('unit') && !empty($request->query('unit'))) {
+    $unitId = $request->query('unit');
+    $sections = Section::where('unit_id', $unitId)->get();
+}
+
+
         $data['sections'] = $sections;
         $data['units'] = $units;
 
@@ -109,6 +116,21 @@ class StudentController extends Controller
         }
 
 
+    // **Unit Filter**
+    if ($request->has('unit') && !empty($request->query('unit'))) {
+        $unitId = $request->query('unit');
+
+        // Get sections under this unit
+        $filteredSections = Section::where('unit_id', $unitId)->pluck('id');
+
+        // Filter students based on sections under this unit
+        $studentsQuery = $studentsQuery->whereIn('users.section_id', $filteredSections);
+
+        $data['showingUnit'] = true;
+        $data['unit'] = Unit::find($unitId);
+    }
+
+    // **Section Filter**
 
         if ($request->has('section') && !empty($request->query('section'))) {
 
@@ -126,7 +148,6 @@ class StudentController extends Controller
 
             $data['showingSection'] = true;
             $data['section'] = $section;
-        } elseif ($request->has('unit')) {
         } else {
             $data['showingSection'] = false;
         }

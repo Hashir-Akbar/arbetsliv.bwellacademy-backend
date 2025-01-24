@@ -18,7 +18,7 @@
 
 @section('content')
     <div class="students-search-container" style="float:right; display: flex;">
-        <select name="section" id="section-select" style="margin-right: 10px;">
+        <select name="section" id="section-select" style="margin-right: 10px; display: none;">
             <option value="" {{ is_null(optional($section ?? null)->id) ? 'selected' : '' }}>
                 Select Department
             </option>
@@ -28,12 +28,12 @@
                 </option>
             @endforeach
         </select>
-        <select name="unit" id="unit-select" style="margin-right: 10px;">
-            <option value="" {{ is_null(optional($section ?? null)->unit_id) ? 'selected' : '' }}>
+        <select name="unit" id="unit-select" style="margin-right: 10px;  ">
+            <option value="" {{ is_null(optional($unit ?? null)->id) ? 'selected' : '' }}>
                 Select Company
             </option>
             @foreach ($units as $iterUnit)
-                <option value="{{ $iterUnit->id }}" {{ $iterUnit->id == optional($section ?? null)->unit_id ? 'selected' : '' }}>
+                <option value="{{ $iterUnit->id }}" {{ $iterUnit->id == optional($unit ?? null)->id ? 'selected' : '' }}>
                     {{ $iterUnit->name }}
                 </option>
             @endforeach
@@ -45,11 +45,34 @@
                 window.location.href = '/admin/students?section=' + sectionId + '&unit=' + unitId;
             });
 
-            document.getElementById('unit-select').addEventListener('change', function() {
-                var unitId = this.value;
-                var sectionId = document.getElementById('section-select').value;
-                window.location.href = '/admin/students?section=' + sectionId + '&unit=' + unitId;
-            });
+            document.addEventListener('DOMContentLoaded', function() {
+        var sectionDropdown = document.getElementById('section-select');
+        var unitSelect = document.getElementById('unit-select');
+
+        // Check URL parameters to set initial visibility of section dropdown
+        var urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('unit') || urlParams.get('section') ) {
+            sectionDropdown.style.display = "inline-block"; // Show department dropdown if unit is selected
+        } 
+
+        unitSelect.addEventListener('change', function() {
+            var unitId = this.value;
+            var sectionId = sectionDropdown.value;
+
+            if (unitId) {
+                sectionDropdown.style.display = "inline-block"; // Show department dropdown
+                if (sectionId) {
+                    window.location.href = '/admin/students?section=' + sectionId + '&unit=' + unitId;
+                } else {
+                    window.location.href = '/admin/students?unit=' + unitId;
+                }
+            } else {
+                sectionDropdown.style.display = "none"; // Hide department dropdown
+                window.location.href = '/admin/students';
+            }
+        });
+    });
+    
         </script>
         <form id="students-search-form" action="{{ url('/admin/students') }}" method="GET"> 
             @if ($showingSection)
