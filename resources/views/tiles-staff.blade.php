@@ -106,84 +106,108 @@ Välkommen {{ $user->full_name() }}
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    const donutCtx = document.getElementById('donutChart').getContext('2d');
-    new Chart(donutCtx, {
-        type: 'doughnut',
-        data: {
-            labels: ['Male (n=45)', 'Female (n=55)'],
-            datasets: [{
-                data: [45, 55],
-                backgroundColor: ['#3276fb', '#f75895'],
-                borderWidth: 2,
-                borderColor: '#ffffff'
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
-                    labels: {
-                        color: '#3276fb',
-                        font: {
-                            size: 14
-                        }
-                    }
-                }
-            }
-        }
-    });
 
-    const barCtx = document.getElementById('barChart').getContext('2d');
-    new Chart(barCtx, {
-        type: 'bar',
-        data: {
-            labels: ['Risk', 'Frisk', 'Warning'],
-            datasets: [
-                {
-                    label: 'Male',
-                    data: [90, 50, 30],
-                    backgroundColor: '#3276fb',
-                    borderRadius: 5,
+    $.ajax(fms_url + "/statistics/filter/set", {
+        dataType: "json",
+        method: "post",
+        success: function (response) {
+            console.log(response);
+
+            numMen = response.numMen;
+            numWomen = response.numWomen;
+
+            const donutCtx = document.getElementById('donutChart').getContext('2d');
+            new Chart(donutCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: [`Male (n=${numMen})`, `Female (n=${numWomen})`],
+                    datasets: [{
+                        data: [numMen, numWomen],
+                        backgroundColor: ['#3276fb', '#f75895'],
+                        borderWidth: 2,
+                        borderColor: '#ffffff'
+                    }]
                 },
-                {
-                    label: 'Female',
-                    data: [60, 40, 20],
-                    backgroundColor: '#f75895',
-                    borderRadius: 5,
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
-                    labels: {
-                        color: '#3276fb',
-                        font: {
-                            size: 14
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: '#3276fb',
+                                font: {
+                                    size: 14
+                                }
+                            }
                         }
                     }
-                },
-                scales: {
-                    x: {
-                        grid: {
-                            display: false
-                        }
-                    },
-                    y: {
-                        grid: {
-                            color: '#e5e7eb'
+                }
+            });
+
+            riskMen = response.riskGroupMen.risk;
+            friskMen = response.riskGroupMen.healthy;
+            warningMen = response.riskGroupMen.warning;
+
+            riskWomen = response.riskGroupWomen.risk;
+            friskWomen = response.riskGroupWomen.healthy;
+            warningWomen = response.riskGroupWomen.warning;
+
+            const barCtx = document.getElementById('barChart').getContext('2d');
+            new Chart(barCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Risk', 'Frisk', 'Warning'],
+                    datasets: [
+                        {
+                            label: 'Male',
+                            data: [riskMen, friskMen, warningMen],
+                            backgroundColor: '#3276fb',
+                            borderRadius: 5,
                         },
-                        ticks: {
-                            stepSize: 20
+                        {
+                            label: 'Female',
+                            data: [riskWomen, friskWomen, warningWomen],
+                            backgroundColor: '#f75895',
+                            borderRadius: 5,
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                color: '#3276fb',
+                                font: {
+                                    size: 14
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                grid: {
+                                    display: false
+                                }
+                            },
+                            y: {
+                                grid: {
+                                    color: '#e5e7eb'
+                                },
+                                ticks: {
+                                    stepSize: 20
+                                }
+                            }
                         }
                     }
                 }
-            }
+            });
+
         }
     });
+    
+
+    
 
     @for ($i = 1; $i <= 5; $i++)
     const additionalBarCtx{{ $i }} = document.getElementById('additionalBarChart{{ $i }}').getContext('2d');
