@@ -139,7 +139,18 @@ Välkommen {{ $user->full_name() }}
                                     size: 14
                                 }
                             }
+                        },
+                        tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.raw;
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = ((value / total) * 100).toFixed(2);
+                                return `${label} : (${percentage}%)`;
+                            }
                         }
+                    }
                     }
                 }
             });
