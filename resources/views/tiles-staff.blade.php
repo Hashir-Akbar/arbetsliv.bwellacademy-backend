@@ -31,6 +31,9 @@ Välkommen {{ $user->full_name() }}
         </div>
     </div>
 
+    <canvas id="physicalChart" width="400" height="200"></canvas>
+    <canvas id="wellbeingChart" width="400" height="200"></canvas>
+
     <div class="charts-container">
         @for ($i = 1; $i <= 5; $i++)
         <div class="chart-card" style="flex: 1 1 100%;">
@@ -139,7 +142,18 @@ Välkommen {{ $user->full_name() }}
                                     size: 14
                                 }
                             }
+                        },
+                        tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.label || '';
+                                const value = context.raw;
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = ((value / total) * 100).toFixed(2);
+                                return ` ${percentage}%`;
+                            }
                         }
+                    }
                     }
                 }
             });
@@ -203,12 +217,78 @@ Välkommen {{ $user->full_name() }}
                 }
             });
 
+            createChart('physicalChart', Object.values(response.mappedLabels.physical), Object.values(response.mappedValues.physical));
+            createChart('wellbeingChart', Object.values(response.mappedLabels.wellbeing), Object.values(response.mappedValues.wellbeing));
+
         }
     });
-    
+
+
+
+    // Function to create a chart
+    function createChart(chartId, labels, values) {
+        const ctx = document.getElementById(chartId).getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Risk',
+                        data: values.map(v => v[0]),
+                        backgroundColor: '#f34f98',
+                    },
+                    {
+                        label: 'Healthy',
+                        data: values.map(v => v[1]),
+                        backgroundColor: '#7FE563',
+                    },
+                    {
+                        label: 'Warning',
+                        data: values.map(v => v[2]),
+                        backgroundColor: '#7AC143',
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.dataset.label || '';
+                                const value = context.raw;
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = ((value / total) * 100).toFixed(2);
+                                return `${label}: ${value} (${percentage}%)`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        grid: {
+                            color: '#e5e7eb'
+                        },
+                        ticks: {
+                            stepSize: 20
+                        }
+                    }
+                }
+            }
+        });
+    }
+
 
     
-
     @for ($i = 1; $i <= 5; $i++)
     const additionalBarCtx{{ $i }} = document.getElementById('additionalBarChart{{ $i }}').getContext('2d');
     new Chart(additionalBarCtx{{ $i }}, {
