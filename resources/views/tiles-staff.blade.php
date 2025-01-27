@@ -6,18 +6,6 @@ Välkommen {{ $user->full_name() }}
 
 @section('content')
 <div class="container">
-    <div class="filters" style="background-color: white;">
-        <select class="dropdown" style="background-color: white;">
-            <option>Company</option>
-            <option>Company A</option>
-            <option>Company B</option>
-        </select>
-        <select class="dropdown" style="background-color: white;">
-            <option>Department</option>
-            <option>HR</option>
-            <option>Engineering</option>
-        </select>
-    </div>
     <div class="charts-container" style="margin-bottom: 20px;">
         <div class="chart-card" style="display: flex; align-items: center; justify-content: space-between;">
             <div style="width: 30%;">
@@ -30,14 +18,10 @@ Välkommen {{ $user->full_name() }}
             </div>
         </div>
     </div>
-
-    <div class="charts-container">
-        @for ($i = 1; $i <= 5; $i++)
-        <div class="chart-card" style="flex: 1 1 100%;">
-            <h3 class="chart-title">Additional Bar Chart {{ $i }}</h3>
-            <canvas id="additionalBarChart{{ $i }}"></canvas>
-        </div>
-        @endfor
+    <div style="text-align: center;">
+        <a class="btn btn-danger btn-outline" href="{{ url('/statistics/') }}">
+            More Stats
+        </a>
     </div>
 </div>
 
@@ -217,60 +201,5 @@ Välkommen {{ $user->full_name() }}
         }
     });
     
-
-    
-
-    @for ($i = 1; $i <= 5; $i++)
-    const additionalBarCtx{{ $i }} = document.getElementById('additionalBarChart{{ $i }}').getContext('2d');
-    new Chart(additionalBarCtx{{ $i }}, {
-        type: 'bar',
-        data: {
-            labels: ['Segment A', 'Segment B', 'Segment C', 'Segment D', 'Segment E', 'Segment F', 'Segment G', 'Segment H', 'Segment I', 'Segment J', 'Segment K', 'Segment L', 'Segment M', 'Segment N', 'Segment O'],
-            datasets: [
-                {
-                    label: 'Data Set 1',
-                    data: Array.from({length: 15}, () => Math.floor(Math.random() * 100)),
-                    backgroundColor: '#3276fb',
-                    borderRadius: 5,
-                },
-                {
-                    label: 'Data Set 2',
-                    data: Array.from({length: 15}, () => Math.floor(Math.random() * 100)),
-                    backgroundColor: '#f75895',
-                    borderRadius: 5,
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
-                    labels: {
-                        color: '#3276fb',
-                        font: {
-                            size: 14
-                        }
-                    }
-                },
-                scales: {
-                    x: {
-                        grid: {
-                            display: false
-                        }
-                    },
-                    y: {
-                        grid: {
-                            color: '#e5e7eb'
-                        },
-                        ticks: {
-                            stepSize: 20
-                        }
-                    }
-                }
-            }
-        }
-    });
-    @endfor
 </script>
 @stop
