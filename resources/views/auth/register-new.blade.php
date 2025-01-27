@@ -24,10 +24,11 @@
                 <h1>{{ __('register.registration') }} for {{$section->name}}</h1>
 
                 @if ($errors->any())
-                <div class="errors">
-                    <div>{{ $errors->first('password') }}</div>
-                    <div>{{ $errors->first('password_confirm') }}</div>
-                </div>
+                    <div class="errors">
+                        @foreach ($errors->all() as $error)
+                            <div style="margin-bottom: 10px;">{{ $error }}</div>
+                        @endforeach
+                    </div>
                 @endif
 
                 {{ Form::hidden('id', $id) }}

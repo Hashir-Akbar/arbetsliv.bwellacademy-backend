@@ -74,11 +74,18 @@ class RegisterController extends Controller
             return back()->withErrors(['secret_code' => 'Secret Code is incorrect.'])->withInput();
         }
 
+        $email = $request->input('email');
+
+        $exists = User::where('email', $email)->count() > 0;
+        if ($exists) {
+            return back()->withErrors(['email' => 'User already exists with this email.'])->withInput();
+        }
+
         $user = new User;
 
         $user->first_name = $request->input('first_name');
         $user->last_name = $request->input('last_name');
-        $user->email = $request->input('email');
+        $user->email = $email;
         $user->birth_date = \Carbon\Carbon::parse($request->input('birth_date'));
         $user->section_id = $id;
         $user->password = Hash::make($request->input('password'));
