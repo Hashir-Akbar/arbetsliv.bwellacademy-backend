@@ -33,15 +33,12 @@ Välkommen {{ $user->full_name() }}
 
     <canvas id="physicalChart" width="400" height="200"></canvas>
     <canvas id="wellbeingChart" width="400" height="200"></canvas>
+    <canvas id="antChart" width="400" height="200"></canvas>
+    <canvas id="energyChart" width="400" height="200"></canvas>
+    <canvas id="freetimeChart" width="400" height="200"></canvas>
+    <canvas id="workChart" width="400" height="200"></canvas>
+    <canvas id="kasamChart" width="400" height="200"></canvas>
 
-    <div class="charts-container">
-        @for ($i = 1; $i <= 5; $i++)
-        <div class="chart-card" style="flex: 1 1 100%;">
-            <h3 class="chart-title">Additional Bar Chart {{ $i }}</h3>
-            <canvas id="additionalBarChart{{ $i }}"></canvas>
-        </div>
-        @endfor
-    </div>
 </div>
 
 <style>
@@ -219,6 +216,11 @@ Välkommen {{ $user->full_name() }}
 
             createChart('physicalChart', Object.values(response.mappedLabels.physical), Object.values(response.mappedValues.physical));
             createChart('wellbeingChart', Object.values(response.mappedLabels.wellbeing), Object.values(response.mappedValues.wellbeing));
+            createChart('antChart', Object.values(response.mappedLabels.ant), Object.values(response.mappedValues.ant));
+            createChart('energyChart', Object.values(response.mappedLabels.energy), Object.values(response.mappedValues.energy));
+            createChart('freetimeChart', Object.values(response.mappedLabels.freetime), Object.values(response.mappedValues.freetime));
+            createChart('workChart', Object.values(response.mappedLabels.work), Object.values(response.mappedValues.work));
+            createChart('kasamChart', Object.values(response.mappedLabels.kasam), Object.values(response.mappedValues.kasam));
 
         }
     });
@@ -241,7 +243,7 @@ Välkommen {{ $user->full_name() }}
                     {
                         label: 'Healthy',
                         data: values.map(v => v[1]),
-                        backgroundColor: '#7FE563',
+                        backgroundColor: '#3276fb',
                     },
                     {
                         label: 'Warning',
@@ -287,59 +289,5 @@ Välkommen {{ $user->full_name() }}
         });
     }
 
-
-    
-    @for ($i = 1; $i <= 5; $i++)
-    const additionalBarCtx{{ $i }} = document.getElementById('additionalBarChart{{ $i }}').getContext('2d');
-    new Chart(additionalBarCtx{{ $i }}, {
-        type: 'bar',
-        data: {
-            labels: ['Segment A', 'Segment B', 'Segment C', 'Segment D', 'Segment E', 'Segment F', 'Segment G', 'Segment H', 'Segment I', 'Segment J', 'Segment K', 'Segment L', 'Segment M', 'Segment N', 'Segment O'],
-            datasets: [
-                {
-                    label: 'Data Set 1',
-                    data: Array.from({length: 15}, () => Math.floor(Math.random() * 100)),
-                    backgroundColor: '#3276fb',
-                    borderRadius: 5,
-                },
-                {
-                    label: 'Data Set 2',
-                    data: Array.from({length: 15}, () => Math.floor(Math.random() * 100)),
-                    backgroundColor: '#f75895',
-                    borderRadius: 5,
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
-                    labels: {
-                        color: '#3276fb',
-                        font: {
-                            size: 14
-                        }
-                    }
-                },
-                scales: {
-                    x: {
-                        grid: {
-                            display: false
-                        }
-                    },
-                    y: {
-                        grid: {
-                            color: '#e5e7eb'
-                        },
-                        ticks: {
-                            stepSize: 20
-                        }
-                    }
-                }
-            }
-        }
-    });
-    @endfor
 </script>
 @stop
