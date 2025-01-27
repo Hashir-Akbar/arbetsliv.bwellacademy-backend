@@ -6,6 +6,18 @@ Välkommen {{ $user->full_name() }}
 
 @section('content')
 <div class="container">
+    <div class="filters" style="background-color: white;">
+        <select class="dropdown" style="background-color: white;">
+            <option>Company</option>
+            <option>Company A</option>
+            <option>Company B</option>
+        </select>
+        <select class="dropdown" style="background-color: white;">
+            <option>Department</option>
+            <option>HR</option>
+            <option>Engineering</option>
+        </select>
+    </div>
     <div class="charts-container" style="margin-bottom: 20px;">
         <div class="chart-card" style="display: flex; align-items: center; justify-content: space-between;">
             <div style="width: 30%;">
@@ -18,10 +30,17 @@ Välkommen {{ $user->full_name() }}
             </div>
         </div>
     </div>
-    <div style="text-align: center;">
-        <a class="btn btn-danger btn-outline" href="{{ url('/statistics/') }}">
-            More Stats
-        </a>
+
+    <canvas id="physicalChart" width="400" height="200"></canvas>
+    <canvas id="wellbeingChart" width="400" height="200"></canvas>
+
+    <div class="charts-container">
+        @for ($i = 1; $i <= 5; $i++)
+        <div class="chart-card" style="flex: 1 1 100%;">
+            <h3 class="chart-title">Additional Bar Chart {{ $i }}</h3>
+            <canvas id="additionalBarChart{{ $i }}"></canvas>
+        </div>
+        @endfor
     </div>
 </div>
 
@@ -198,8 +217,129 @@ Välkommen {{ $user->full_name() }}
                 }
             });
 
+            createChart('physicalChart', Object.values(response.mappedLabels.physical), Object.values(response.mappedValues.physical));
+            createChart('wellbeingChart', Object.values(response.mappedLabels.wellbeing), Object.values(response.mappedValues.wellbeing));
+
         }
     });
+
+
+
+    // Function to create a chart
+    function createChart(chartId, labels, values) {
+        const ctx = document.getElementById(chartId).getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Risk',
+                        data: values.map(v => v[0]),
+                        backgroundColor: '#f34f98',
+                    },
+                    {
+                        label: 'Healthy',
+                        data: values.map(v => v[1]),
+                        backgroundColor: '#7FE563',
+                    },
+                    {
+                        label: 'Warning',
+                        data: values.map(v => v[2]),
+                        backgroundColor: '#7AC143',
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                const label = context.dataset.label || '';
+                                const value = context.raw;
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = ((value / total) * 100).toFixed(2);
+                                return `${label}: ${value} (${percentage}%)`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        grid: {
+                            color: '#e5e7eb'
+                        },
+                        ticks: {
+                            stepSize: 20
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+
     
+    @for ($i = 1; $i <= 5; $i++)
+    const additionalBarCtx{{ $i }} = document.getElementById('additionalBarChart{{ $i }}').getContext('2d');
+    new Chart(additionalBarCtx{{ $i }}, {
+        type: 'bar',
+        data: {
+            labels: ['Segment A', 'Segment B', 'Segment C', 'Segment D', 'Segment E', 'Segment F', 'Segment G', 'Segment H', 'Segment I', 'Segment J', 'Segment K', 'Segment L', 'Segment M', 'Segment N', 'Segment O'],
+            datasets: [
+                {
+                    label: 'Data Set 1',
+                    data: Array.from({length: 15}, () => Math.floor(Math.random() * 100)),
+                    backgroundColor: '#3276fb',
+                    borderRadius: 5,
+                },
+                {
+                    label: 'Data Set 2',
+                    data: Array.from({length: 15}, () => Math.floor(Math.random() * 100)),
+                    backgroundColor: '#f75895',
+                    borderRadius: 5,
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        color: '#3276fb',
+                        font: {
+                            size: 14
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        grid: {
+                            color: '#e5e7eb'
+                        },
+                        ticks: {
+                            stepSize: 20
+                        }
+                    }
+                }
+            }
+        }
+    });
+    @endfor
 </script>
 @stop
