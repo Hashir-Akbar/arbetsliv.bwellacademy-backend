@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Writer\PngWriter;
+use Illuminate\Support\Str;
 
 class SectionController extends Controller
 {
@@ -305,6 +308,33 @@ class SectionController extends Controller
         $section->update(['archived_at' => now()]);
 
         return redirect(url('/admin/sections?unit=' . $section->unit_id));
+    }
+
+    public function getQr($id) {
+        $user = Auth::user();
+        $section = Section::findOrFail($id);
+        if (! $user->canDo('create_sections') || ! $section->accessibleBy($user)) {
+            abort(403);
+        }
+        // Check if a secret code exists, if not, create one
+        if (is_null($section->secret_code)) {
+            $section->secret_code = strtoupper(Str::random(5)); // Generate a random secret code of 5 uppercase characters
+            $section->save();
+        }
+        $qrCode = new QrCode(config('app.url') . '/register?id=' . $id);
+        $writer = new PngWriter();
+        $result = $writer->write($qrCode);
+
+        // Store the QR code string in the section
+        $qr_code = $result->getString();
+
+        $data = [
+            'section' => $section,
+            'user' => Auth::user(),
+            'id' => $id,
+            'qr_code' => $qr_code,
+        ];
+        return view('admin.sections.qr', $data);
     }
 
     
