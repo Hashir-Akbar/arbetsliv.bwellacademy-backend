@@ -36,7 +36,15 @@ class StudentController extends Controller
             $sections = Section::where('unit_id', $user->unit_id)->get();
         }
 
+  // Update to filter sections by unit if unit is specified in the request
+  if ($request->has('unit') && !empty($request->query('unit'))) {
+    $unitId = $request->query('unit');
+    $sections = Section::where('unit_id', $unitId)->get();
+}
+
+
         $data['sections'] = $sections;
+        $data['units'] = $units;
 
         if ($units->count() < 1) {
             return view('admin.students.no-units');
@@ -101,7 +109,31 @@ class StudentController extends Controller
             }
         }
 
-        if ($request->has('section')) {
+        if ($request->has('unit')) {
+
+
+
+        }
+
+
+    // **Unit Filter**
+    if ($request->has('unit') && !empty($request->query('unit'))) {
+        $unitId = $request->query('unit');
+
+        // Get sections under this unit
+        $filteredSections = Section::where('unit_id', $unitId)->pluck('id');
+
+        // Filter students based on sections under this unit
+        $studentsQuery = $studentsQuery->whereIn('users.section_id', $filteredSections);
+
+        $data['showingUnit'] = true;
+        $data['unit'] = Unit::find($unitId);
+    }
+
+    // **Section Filter**
+
+        if ($request->has('section') && !empty($request->query('section'))) {
+
             $section = Section::findOrFail($request->query('section'));
 
             // make sure we have access to the section

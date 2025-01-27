@@ -159,6 +159,8 @@ Route::middleware(['auth'])->group(function () {
             Route::get('{id}/archive', 'SectionController@getArchive');
             Route::post('{id}/archive', 'SectionController@postArchive');
 
+            Route::get('{id}/qr', 'SectionController@getQr');
+
             Route::get('{section_id}/reginfo', 'StudentController@getRegInfoSection');
 
             Route::get('{section_id}/students/add', 'StudentController@getNewMultiple');
@@ -214,3 +216,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('selection/{cacheId}', 'StatsController@getSelection');
     });
 });
+
+
+// first show all companies in employees page and upon selection allow the user to select any department
