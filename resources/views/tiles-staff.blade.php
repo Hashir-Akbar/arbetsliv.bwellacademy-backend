@@ -122,8 +122,8 @@ Välkommen {{ $user->full_name() }}
         success: function (response) {
             console.log(response);
 
-            numMen = response.numMen;
-            numWomen = response.numWomen;
+            numMen = response.numMen ?? 0;
+            numWomen = response.numWomen ?? 0;
 
             const donutCtx = document.getElementById('donutChart').getContext('2d');
             const donutChart = new Chart(donutCtx, {
@@ -165,13 +165,13 @@ Välkommen {{ $user->full_name() }}
             });
             chartInstances.push(donutChart);
 
-            riskMen = response.riskGroupMen.risk;
-            friskMen = response.riskGroupMen.healthy;
-            warningMen = response.riskGroupMen.warning;
+            riskMen = response.riskGroupMen?.risk ?? 0;
+            friskMen = response.riskGroupMen?.healthy ?? 0;
+            warningMen = response.riskGroupMen?.warning ?? 0;
 
-            riskWomen = response.riskGroupWomen.risk;
-            friskWomen = response.riskGroupWomen.healthy;
-            warningWomen = response.riskGroupWomen.warning;
+            riskWomen = response.riskGroupWomen?.risk ?? 0;
+            friskWomen = response.riskGroupWomen?.healthy ?? 0;
+            warningWomen = response.riskGroupWomen?.warning ?? 0;
 
             const barCtx = document.getElementById('barChart').getContext('2d');
             const barChart = new Chart(barCtx, {
@@ -226,13 +226,13 @@ Välkommen {{ $user->full_name() }}
 
             chartInstances.push(barChart);
 
-            createChart('physicalChart', Object.values(response.mappedLabels.physical), Object.values(response.mappedValues.physical));
-            createChart('wellbeingChart', Object.values(response.mappedLabels.wellbeing), Object.values(response.mappedValues.wellbeing));
-            createChart('antChart', Object.values(response.mappedLabels.ant), Object.values(response.mappedValues.ant));
-            createChart('energyChart', Object.values(response.mappedLabels.energy), Object.values(response.mappedValues.energy));
-            createChart('freetimeChart', Object.values(response.mappedLabels.freetime), Object.values(response.mappedValues.freetime));
-            createChart('workChart', Object.values(response.mappedLabels.work), Object.values(response.mappedValues.work));
-            createChart('kasamChart', Object.values(response.mappedLabels.kasam), Object.values(response.mappedValues.kasam));
+            createChart('physicalChart', Object.values(response.mappedLabels.physical ?? {}), Object.values(response.mappedValues.physical ?? {}));
+            createChart('wellbeingChart', Object.values(response.mappedLabels.wellbeing ?? {}), Object.values(response.mappedValues.wellbeing ?? {}));
+            createChart('antChart', Object.values(response.mappedLabels.ant ?? {}), Object.values(response.mappedValues.ant ?? {}));
+            createChart('energyChart', Object.values(response.mappedLabels.energy ?? {}), Object.values(response.mappedValues.energy ?? {}));
+            createChart('freetimeChart', Object.values(response.mappedLabels.freetime ?? {}), Object.values(response.mappedValues.freetime ?? {}));
+            createChart('workChart', Object.values(response.mappedLabels.work ?? {}), Object.values(response.mappedValues.work ?? {}));
+            createChart('kasamChart', Object.values(response.mappedLabels.kasam ?? {}), Object.values(response.mappedValues.kasam ?? {}));
 
         }
     });
