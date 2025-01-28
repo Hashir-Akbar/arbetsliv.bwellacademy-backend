@@ -9,7 +9,7 @@ Välkommen {{ $user->full_name() }}
     <div class="filters" style="background-color: white;">
         <select class="dropdown" style="background-color: white;" id="sectionDropdown">
             <option value="">
-                Select Department
+                Välj Avdelning
             </option>
             <?php foreach ($sections as $iterSection): ?>
                 <option value="<?= $iterSection->unit_id.".".$iterSection->id ?>" <?= $iterSection->id == optional($section ?? null)->id ? 'selected' : '' ?>>

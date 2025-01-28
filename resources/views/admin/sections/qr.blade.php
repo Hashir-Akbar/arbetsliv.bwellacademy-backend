@@ -20,5 +20,5 @@
     <div>
         <img src="data:image/png;base64,{{ base64_encode($qr_code) }}" alt="QR Code">
     </div>
-</div>w
+</div>
 @stop
