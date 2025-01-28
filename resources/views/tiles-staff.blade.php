@@ -121,7 +121,39 @@ Välkommen {{ $user->full_name() }}
         data: selectedSectionId ? { section: selectedSectionId } : {}, // Send data only if a section is selected
         success: function (response) {
             console.log(response);
+            if (!response || Object.keys(response).length === 0) {
+                // Clear the chart area and show a message
+                document.querySelector('.charts-container').innerHTML = `
+                    <div class="empty">
+                        @if (App::isLocale('sv'))
+                        <h2>Det här urvalet har inga {{ config('fms.type') == 'work' ? 'anställda' : 'elever' }}</h2>
+                        <h4>Använd filtreringsmenyn för att välja ett annat urval.</h4>
+                        @else
+                        <h2>This selection does not have any {{ config('fms.type') == 'work' ? 'employees' : 'students' }}</h2>
+                        <h4>Use the filter menu to change selection.</h4>
+                        @endif
+                    </div>
+                `;
+                return;
+            }
 
+            // Reset the charts container to its original state
+            document.querySelector('.charts-container').innerHTML = `
+                <div class="chart-card" style="display: flex; align-items: center; justify-content: space-between;">
+                    <div style="width: 30%;">
+                        <h3 class="chart-title">Anställda</h3>
+                        <canvas id="donutChart"></canvas>
+                    </div>
+                    <div style="width: 60%;">
+                        <h3 class="chart-title ">Users by Category</h3>
+                        <canvas id="barChart"></canvas>
+                    </div>
+                </div>
+            `;
+
+
+
+        
             numMen = response.numMen ?? 0;
             numWomen = response.numWomen ?? 0;
 
