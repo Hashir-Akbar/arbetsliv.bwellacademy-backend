@@ -7,16 +7,17 @@ Välkommen {{ $user->full_name() }}
 @section('content')
 <div class="container">
     <div class="filters" style="background-color: white;">
-        <select class="dropdown" style="background-color: white;">
-            <option>Company</option>
-            <option>Company A</option>
-            <option>Company B</option>
+        <select class="dropdown" style="background-color: white;" id="sectionDropdown">
+            <option value="">
+                Select Department
+            </option>
+            <?php foreach ($sections as $iterSection): ?>
+                <option value="<?= $iterSection->unit_id.".".$iterSection->id ?>" <?= $iterSection->id == optional($section ?? null)->id ? 'selected' : '' ?>>
+                    <?= $iterSection->full_name() ?>
+                </option>
+            <?php endforeach; ?>
         </select>
-        <select class="dropdown" style="background-color: white;">
-            <option>Department</option>
-            <option>HR</option>
-            <option>Engineering</option>
-        </select>
+
     </div>
     <div class="charts-container" style="margin-bottom: 20px;">
         <div class="chart-card" style="display: flex; align-items: center; justify-content: space-between;">
@@ -107,9 +108,17 @@ Välkommen {{ $user->full_name() }}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 
+    let chartInstances = [];
+
+    function fetchDataAndRenderCharts(selectedSectionId) {
+
+    chartInstances.forEach(chart => chart.destroy());
+    chartInstances = [];
+
     $.ajax(fms_url + "/statistics/filter/set", {
         dataType: "json",
         method: "post",
+        data: selectedSectionId ? { section: selectedSectionId } : {}, // Send data only if a section is selected
         success: function (response) {
             console.log(response);
 
@@ -117,7 +126,7 @@ Välkommen {{ $user->full_name() }}
             numWomen = response.numWomen;
 
             const donutCtx = document.getElementById('donutChart').getContext('2d');
-            new Chart(donutCtx, {
+            const donutChart = new Chart(donutCtx, {
                 type: 'doughnut',
                 data: {
                     labels: [`Male (n=${numMen})`, `Female (n=${numWomen})`],
@@ -154,6 +163,7 @@ Välkommen {{ $user->full_name() }}
                     }
                 }
             });
+            chartInstances.push(donutChart);
 
             riskMen = response.riskGroupMen.risk;
             friskMen = response.riskGroupMen.healthy;
@@ -164,7 +174,7 @@ Välkommen {{ $user->full_name() }}
             warningWomen = response.riskGroupWomen.warning;
 
             const barCtx = document.getElementById('barChart').getContext('2d');
-            new Chart(barCtx, {
+            const barChart = new Chart(barCtx, {
                 type: 'bar',
                 data: {
                     labels: ['Risk', 'Frisk', 'Warning'],
@@ -214,6 +224,8 @@ Välkommen {{ $user->full_name() }}
                 }
             });
 
+            chartInstances.push(barChart);
+
             createChart('physicalChart', Object.values(response.mappedLabels.physical), Object.values(response.mappedValues.physical));
             createChart('wellbeingChart', Object.values(response.mappedLabels.wellbeing), Object.values(response.mappedValues.wellbeing));
             createChart('antChart', Object.values(response.mappedLabels.ant), Object.values(response.mappedValues.ant));
@@ -230,7 +242,7 @@ Välkommen {{ $user->full_name() }}
     // Function to create a chart
     function createChart(chartId, labels, values) {
         const ctx = document.getElementById(chartId).getContext('2d');
-        new Chart(ctx, {
+        chart = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: labels,
@@ -287,7 +299,19 @@ Välkommen {{ $user->full_name() }}
                 }
             }
         });
-    }
+        chartInstances.push(chart);
+
+    }}
+
+    window.addEventListener('load', function() {
+        const initialSectionId = document.getElementById('sectionDropdown').value;
+        fetchDataAndRenderCharts(initialSectionId);
+    });
+
+    document.getElementById('sectionDropdown').addEventListener('change', function() {
+        const selectedSectionId = this.value;
+        fetchDataAndRenderCharts(selectedSectionId);
+    });
 
 </script>
 @stop
