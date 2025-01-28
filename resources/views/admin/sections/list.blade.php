@@ -20,7 +20,7 @@
 <div class="students-search-container" style="float:right; display: flex;">
     <select name="unit" id="unit-select" style="margin-right: 10px;">
         <option value="" {{ is_null(optional($section ?? null)->unit_id) ? 'selected' : '' }}>
-            Select Company
+            Välj Företag
         </option>
         @foreach ($units as $iterUnit)
             <option value="{{ $iterUnit->id }}" {{ $iterUnit->id == optional($unit ?? null)->id ? 'selected' : '' }}>

@@ -22,7 +22,7 @@ return [
     'edit' => 'Edit',
     'remove' => 'Remove',
     'archive' => 'Archive',
-    'qr' => 'Generate QR',
+    'qr' => 'Generera QR',
 
     'yes' => 'Yes',
     'no' => 'No',

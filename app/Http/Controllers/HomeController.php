@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Section;
+
 
 use Illuminate\Http\Request;
 
@@ -15,11 +17,18 @@ class HomeController extends Controller
     {
         $user = $request->user();
 
+        if ($user->isSuperAdmin()) {
+            $sections = Section::all();
+        } else {
+            $sections = Section::where('unit_id', $user->unit_id)->get();
+        }
+
         return view($user->isStudent() ? 'tiles-student' : 'tiles-staff', [
             'user' => $user,
             'active' => 'panel',
             'help' => 'panel',
             'cssClasses' => 'tiles-page',
+            'sections' => $sections,
         ]);
     }
 }
