@@ -26,7 +26,7 @@ Välkommen {{ $user->full_name() }}
                 <canvas id="donutChart"></canvas>
             </div>
             <div style="width: 60%;">
-                <h3 class="chart-title ">Users by Category</h3>
+                <h3 class="chart-title ">Användare efter kategori</h3>
                 <canvas id="barChart"></canvas>
             </div>
         </div>
@@ -145,7 +145,7 @@ Välkommen {{ $user->full_name() }}
                         <canvas id="donutChart"></canvas>
                     </div>
                     <div style="width: 60%;">
-                        <h3 class="chart-title ">Users by Category</h3>
+                        <h3 class="chart-title ">Användare efter kategori</h3>
                         <canvas id="barChart"></canvas>
                     </div>
                 </div>
@@ -282,17 +282,17 @@ Välkommen {{ $user->full_name() }}
                     {
                         label: 'Risk',
                         data: values.map(v => v[0]),
-                        backgroundColor: '#f34f98',
+                        backgroundColor: '#eb4034',
                     },
                     {
-                        label: 'Healthy',
+                        label: 'Frisk',
                         data: values.map(v => v[1]),
-                        backgroundColor: '#3276fb',
+                        backgroundColor: '#7FE563',
                     },
                     {
-                        label: 'Warning',
+                        label: 'Varning',
                         data: values.map(v => v[2]),
-                        backgroundColor: '#7AC143',
+                        backgroundColor: '#333333',
                     }
                 ]
             },
