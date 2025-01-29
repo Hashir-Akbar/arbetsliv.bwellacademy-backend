@@ -3,7 +3,7 @@
 $data = [
     'start' => 'Startsida',
     'units' => 'Skolor',
-    'staff' => 'Personal',
+    'staff' => 'ADMINISTRATÖRER',
     'sections' => 'Klasser',
     'students' => 'Elever',
     'stats' => 'Statistik',
@@ -13,7 +13,7 @@ $data = [
     'logged_in_as' => 'Inloggad som',
     'logout' => 'Logga ut',
     'search' => 'Sök',
-    'questionnaire' => 'Enkät',
+    'questionnaire' => 'FRÅGOR',
     'users' => 'Användare',
     'groups' => 'Användargrupper',
     'sample' => 'Skolans egna grupper',
@@ -26,7 +26,7 @@ $data = [
 
 if (config('fms.type') == 'work') {
     $data = array_merge($data, [
-        'units' => 'Företag',
+        'units' => 'ORGANISATIONER',
         'sections' => 'Avdelningar',
         'students' => 'Anställda',
         'student-questions' => 'Vuxenfrågor',
