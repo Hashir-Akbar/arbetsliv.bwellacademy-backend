@@ -30,6 +30,7 @@ $data = [
     'merit' => 'Meritvärde',
     'physical' => 'Upplevd fys kapacitet',
     'physicalTraining' => 'Fysisk träning',
+    'physicalCondition' => 'Min kondition',
     'schlAtmosphere' => 'Arbetsro (gammal)',
     'schlCalmness' => 'Skolstress (gammal)',
     'schlComfort' => 'Trivsel (gammal)',

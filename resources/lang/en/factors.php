@@ -29,6 +29,7 @@ return [
     'merit' => 'Meritvärde',
     'physical' => 'Experienced physical capacity',
     'physicalTraining' => 'Physical training',
+    'physicalCondition' => 'My Fitness',
     'schlAtmosphere' => 'Arbetsro (old)',
     'schlCalmness' => 'Skolstress (old)',
     'schlComfort' => 'Wellbeing (old)',

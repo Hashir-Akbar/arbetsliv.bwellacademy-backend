@@ -40,6 +40,7 @@ class StatsController extends Controller
         'weight' => 'physical',
         'physical' => 'physical',
         'physicalTraining' => 'physical',
+        'physicalCondition' => 'physical',
         'activitiesTimeSpent' => 'physical',
         'sitting' => 'physical',
         // wellbeing
