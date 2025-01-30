@@ -69,15 +69,15 @@ class QuestionsService
                     ]);
                 }
 
-                array_splice($groups, -1, 0, [
-                    [
-                        'label' => 'fitness-instruction',
-                        'category_id' => 0,
-                        'can_improve' => false,
-                        'improve_name' => null,
-                        'questions' => [],
-                    ],
-                ]);
+                // array_splice($groups, -1, 0, [
+                //     [
+                //         'label' => 'fitness-instruction',
+                //         'category_id' => 0,
+                //         'can_improve' => false,
+                //         'improve_name' => null,
+                //         'questions' => [],
+                //     ],
+                // ]);
 
                 $groups = [
                     [
