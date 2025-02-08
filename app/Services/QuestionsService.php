@@ -131,9 +131,6 @@ class QuestionsService
 
                 foreach ($groups as $group) {
                     $processedGroups[] = $group;
-                    if (str_contains($group['improve_name'], 'alcohol')) {
-                        $processedGroups[] = ['label' => 'buddy-alcohol'];
-                    }
                 }
 
                 $groups = $processedGroups;
