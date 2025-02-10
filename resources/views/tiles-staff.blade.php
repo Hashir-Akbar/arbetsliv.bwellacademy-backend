@@ -40,6 +40,11 @@ Välkommen {{ $user->full_name() }}
     <canvas id="workChart" width="400" height="200"></canvas>
     <canvas id="kasamChart" width="400" height="200"></canvas>
 
+    <div class="chart-card" style="margin-top: 20px;">
+        <h3 class="chart-title">Feedback Statistics</h3>
+        <canvas id="feedbackChart"></canvas>
+    </div>
+
 </div>
 
 <style>
@@ -270,6 +275,62 @@ Välkommen {{ $user->full_name() }}
     });
 
 
+
+    $.ajax(fms_url + "/statistics/feedback", {
+        dataType: "json",
+        method: "get",
+        data: selectedSectionId ? { section: selectedSectionId } : {}, // Send data only if a section is selected
+        success: function (response) {
+            console.log(response);
+            const feedbackCtx = document.getElementById('feedbackChart').getContext('2d');
+            const feedbackChart = new Chart(feedbackCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Agree', 'Neutral', 'Disagree'],
+                    datasets: [{
+                        label: 'Feedback Count',
+                        data: [response.count_one, response.count_zero, response.count_negative_one],
+                        backgroundColor: ['#7FE563', '#3276fb', '#eb4034'],
+                        borderWidth: 1  
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.dataset.label || '';
+                                    const value = context.raw;
+                                    return `${label}: ${value}`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            grid: {
+                                color: '#e5e7eb'
+                            },
+                            ticks: {
+                                stepSize: 5
+                            }
+                        }
+                    }
+                }
+            });
+
+            chartInstances.push(feedbackChart);
+        }
+    });
 
     // Function to create a chart
     function createChart(chartId, labels, values) {

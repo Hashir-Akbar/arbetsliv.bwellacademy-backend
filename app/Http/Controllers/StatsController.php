@@ -11,6 +11,7 @@ use App\SampleGroup;
 use App\SampleGroupMember;
 use App\Section;
 use App\StatsFilter;
+use App\FeedbackAnswer;
 use App\Unit;
 use App\User;
 use Carbon\Carbon;
@@ -1489,6 +1490,49 @@ class StatsController extends Controller
         }
 
         return $profile;
+    }
+
+    public function ajaxGetFeedback(Request $request) {
+
+        $user = Auth::user();
+
+        if (is_null($user)) {
+            abort(404);
+        }
+
+        if ($user->isStudent()) {
+            abort(404);
+        }
+
+        if ($user->isSuperAdmin()) {
+            $units = Unit::all();
+        } else {
+            $units = Unit::where('id', $user->unit_id)->get();
+        }
+
+        // Get all sections for these units
+        $unitIds = $units->pluck('id');
+        $sections = Section::whereIn('unit_id', $unitIds)->get();
+
+        // Get all users for these sections
+        $sectionIds = $sections->pluck('id');
+        $users = User::whereIn('section_id', $sectionIds)->get();
+
+        // Get all feedback answers for all users
+        $feedbackAnswers = FeedbackAnswer::whereIn('profile_id', $users->pluck('id'))->get();
+
+        // Count feedback answers with specific values
+        $countZero = $feedbackAnswers->where('value', 0)->count();
+        $countOne = $feedbackAnswers->where('value', 1)->count();
+        $countNegativeOne = $feedbackAnswers->where('value', -1)->count();
+
+        // Send JSON response with counts
+        return response()->json([
+            'count_zero' => $countZero,
+            'count_one' => $countOne,
+            'count_negative_one' => $countNegativeOne,
+        ]);
+
     }
 }
 

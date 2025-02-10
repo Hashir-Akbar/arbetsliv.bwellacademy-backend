@@ -214,6 +214,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('filter/remove', 'StatsController@ajaxRemoveFilter');
         Route::post('compare', 'StatsController@ajaxCompare');
         Route::get('selection/{cacheId}', 'StatsController@getSelection');
+        Route::get('feedback', 'StatsController@ajaxGetFeedback');
     });
 });
 
