@@ -97,6 +97,13 @@ class QuestionsService
                     ],
                 ];
             } elseif ($page->name === 'physical_questions') {
+                $groups = array_map(function ($group) {
+                    return [
+                        ...$group,
+                        'can_improve' => true, // Ensure all groups are improvable
+                    ];
+                }, $groups);
+
                 $groups = [
                     ...$groups,
                     [
