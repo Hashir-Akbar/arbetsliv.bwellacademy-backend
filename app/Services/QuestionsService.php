@@ -80,13 +80,13 @@ class QuestionsService
                 // ]);
 
                 $groups = [
-                    [
-                        'label' => 'prelude',
-                        'category_id' => 0,
-                        'can_improve' => false,
-                        'improve_name' => null,
-                        'questions' => [],
-                    ],
+                    // [
+                    //     'label' => 'prelude',
+                    //     'category_id' => 0,
+                    //     'can_improve' => false,
+                    //     'improve_name' => null,
+                    //     'questions' => [],
+                    // ],
                     ...$groups,
                     [
                         'label' => 'epilogue',
