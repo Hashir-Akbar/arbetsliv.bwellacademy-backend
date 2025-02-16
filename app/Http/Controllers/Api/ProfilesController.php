@@ -123,7 +123,7 @@ class ProfilesController extends Controller
         $data['factor'] = $factor;
         $data['risk_value'] = $factor->value;
         $data['risk_status_label'] = t($factor->status);
-        $data['risk_status_name'] = $factor->status;
+        $data['risk_status_name'] = $factor->status == 'profile.risk' ? 'risk' : 'healthy';
         $data['category_id'] = $category_id;
 
         $show_improve = $factor->status != 'profile.unknown';
