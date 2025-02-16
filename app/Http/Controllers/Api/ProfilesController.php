@@ -124,6 +124,7 @@ class ProfilesController extends Controller
         $data['risk_value'] = $factor->value;
         $data['risk_status_label'] = t($factor->status);
         $data['risk_status_name'] = $factor->status == 'profile.risk' ? 'risk' : 'healthy';
+        \Log::info($data['risk_status_name']);
         $data['category_id'] = $category_id;
 
         $show_improve = $factor->status != 'profile.unknown';
