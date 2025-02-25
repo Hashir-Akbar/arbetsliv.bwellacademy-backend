@@ -24,7 +24,7 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 COPY . /var/www
 
 # Install Composer dependencies
-RUN composer install --no-autoloader
+RUN composer install --prefer-dist --no-dev --optimize-autoloader
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www && \
