@@ -25,7 +25,7 @@ services:
       MYSQL_ROOT_PASSWORD: bwell_work
       MYSQL_SSL_MODE: DISABLED  # Add this line to disable SSL
     ports:
-      - "3306:3306"
+      - "3307:3306"
     networks:
       - laravel
 
