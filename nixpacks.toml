@@ -27,8 +27,6 @@ supervisord -c /etc/supervisord.conf -n
 "supervisord.conf" = '''
 [unix_http_server]
 file=/assets/supervisor.sock
-chmod=0700
-chown=www-data:www-data
 
 [supervisord]
 logfile=/var/log/supervisord.log
@@ -88,12 +86,11 @@ stderr_logfile=/var/log/worker-laravel.log
 
 "php-fpm.conf" = '''
 [www]
-listen = /var/run/php-fpm.sock
-listen.owner = www-data
-listen.group = www-data
-listen.mode = 0660
+listen = 127.0.0.1:9000
 user = www-data
 group = www-data
+listen.owner = www-data
+listen.group = www-data
 pm = dynamic
 pm.max_children = 50
 pm.min_spare_servers = 4
@@ -128,19 +125,10 @@ http {
     server_names_hash_bucket_size 128; # this seems to be required for some vhosts
 
     server {
-        listen 80;
-        listen [::]:80;
-        server_name localhost;
-        return 301 https://$host$request_uri;
-    }
-
-    server {
-        listen ${PORT} ssl;
-        listen [::]:${PORT} ssl;
+        listen ${PORT};
+        listen [::]:${PORT};
         server_name localhost;
 
-        ssl_certificate /etc/ssl/certs/server.crt;
-        ssl_certificate_key /etc/ssl/private/server.key;
 
         $if(NIXPACKS_PHP_ROOT_DIR) (
             root ${NIXPACKS_PHP_ROOT_DIR};
@@ -174,7 +162,7 @@ http {
         ) else ()
 
         location ~ \.php$ {
-            fastcgi_pass unix:/var/run/php-fpm.sock;
+            fastcgi_pass 127.0.0.1:9000;
             fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
             include $!{nginx}/conf/fastcgi_params;
             include $!{nginx}/conf/fastcgi.conf;
