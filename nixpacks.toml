@@ -17,6 +17,12 @@ cmd = '/assets/start.sh'
 "start.sh" = '''
 #!/bin/bash
 
+# Generate SSL certificates if not exist (for local use)
+if [ ! -f "/etc/nginx/ssl/server.crt" ]; then
+    mkdir -p /etc/nginx/ssl
+    openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/server.key -out /etc/nginx/ssl/server.crt -subj "/CN=localhost"
+fi
+
 # Transform the nginx configuration
 node /assets/scripts/prestart.mjs /assets/nginx.template.conf /etc/nginx.conf
 
@@ -107,7 +113,7 @@ daemon off;
 worker_rlimit_nofile 8192;
 
 events {
-  worker_connections  4096;  # Default: 1024
+  worker_connections  4096;
 }
 
 http {
@@ -122,19 +128,25 @@ http {
     error_log /var/log/nginx-error.log;
     sendfile     on;
     tcp_nopush   on;
-    server_names_hash_bucket_size 128; # this seems to be required for some vhosts
+    server_names_hash_bucket_size 128;
+
+    # Redirect HTTP to HTTPS
+    server {
+        listen 80;
+        listen [::]:80;
+        server_name localhost;
+        return 301 https://$host$request_uri;
+    }
 
     server {
-        listen ${PORT};
-        listen [::]:${PORT};
+        listen 443 ssl;
+        listen [::]:443 ssl;
         server_name localhost;
 
-        $if(NIXPACKS_PHP_ROOT_DIR) (
-            root ${NIXPACKS_PHP_ROOT_DIR};
-        ) else (
-            root /app;
-        )
+        ssl_certificate /etc/nginx/ssl/server.crt;
+        ssl_certificate_key /etc/nginx/ssl/server.key;
 
+        add_header Strict-Transport-Security "max-age=31536000" always;
         add_header X-Content-Type-Options "nosniff";
 
         client_max_body_size 35M;
@@ -143,14 +155,20 @@ http {
 
         charset utf-8;
 
+        $if(NIXPACKS_PHP_ROOT_DIR) (
+            root ${NIXPACKS_PHP_ROOT_DIR};
+        ) else (
+            root /app;
+        )
+
         $if(NIXPACKS_PHP_FALLBACK_PATH) (
             location / {
                 try_files $uri $uri/ ${NIXPACKS_PHP_FALLBACK_PATH}?$query_string;
             }
         ) else (
-          location / {
+            location / {
                 try_files $uri $uri/ /index.php?$query_string;
-           }
+            }
         )
 
         location = /favicon.ico { access_log off; log_not_found off; }
@@ -163,10 +181,7 @@ http {
         location ~ \.php$ {
             fastcgi_pass 127.0.0.1:9000;
             fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
-            include $!{nginx}/conf/fastcgi_params;
-            include $!{nginx}/conf/fastcgi.conf;
-
-            fastcgi_param PHP_VALUE "upload_max_filesize=30M \n post_max_size=35M";
+            include fastcgi_params;
         }
 
         location ~ /\.(?!well-known).* {
