@@ -557,7 +557,7 @@
         var filterOptions = serializeFilter();
 
         // ajax away the JSON
-        $.ajax(fms_url + "/statistics/filter/set", {
+        $.ajax("https://arbetsliv.bwellacademy.com" + "/statistics/filter/set", {
             data: filterOptions,
             dataType: "json",
             method: "post",
