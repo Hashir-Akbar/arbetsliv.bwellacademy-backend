@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'https://arbetsliv.bwellacademy.com'),
+    'url' => env('APP_URL', 'http://localhost'),
 
     'student_app_url' => env('STUDENT_APP_URL', null),
 
