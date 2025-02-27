@@ -129,7 +129,6 @@ http {
         listen [::]:${PORT};
         server_name localhost;
 
-
         $if(NIXPACKS_PHP_ROOT_DIR) (
             root ${NIXPACKS_PHP_ROOT_DIR};
         ) else (
