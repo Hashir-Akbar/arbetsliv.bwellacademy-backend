@@ -38,7 +38,7 @@ services:
       - "80:80"
     volumes:
       - .:/var/www
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf  # Ensure this file exists
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro  # Ensure this file exists
     depends_on:
       - app
     networks:
