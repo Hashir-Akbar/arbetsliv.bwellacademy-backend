@@ -1,8 +1,8 @@
 version: '3'
 services:
   app:
-    image: wyveo/nginx-php-fpm:php82
-      #platform: linux/amd64 # line in question
+    build: .
+      #    platform: linux/amd64 # line in question
     working_dir: /var/www/html
     volumes:
         - ./:/var/www/html
@@ -13,7 +13,7 @@ services:
       - laravel
   mysql:
     image: mysql:5.7
-      #platform: linux/amd64 # line in question
+    platform: linux/amd64 # line in question
     container_name: laravel_mysql
     restart: unless-stopped
     environment:
