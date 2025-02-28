@@ -1,33 +1,51 @@
-version: '3'
+version: '3.8'
+
 services:
   app:
     build: .
-    working_dir: /var/www/html
+    container_name: laravel_app
+    restart: unless-stopped
+    working_dir: /var/www
     volumes:
-      - ./:/var/www/html
-      - ./nginx:/etc/nginx/conf.d:ro
+      - .:/var/www
+      - /var/www/vendor  # Persist vendor directory (important in Coolify)
     depends_on:
       - mysql
     networks:
       - laravel
+
   mysql:
-    image: mysql:5.7
-    platform: linux/amd64
-    container_name: laravel_mysql
-    restart: unless-stopped
-    environment:
-      MYSQL_DATABASE: default
-      MYSQL_USER: mysql
-      MYSQL_PASSWORD: "6sXDBkduDCLwKaTXH9weDhEnwjNIWWsioosKPAVAKGbbolKwAlQ37y2GUzGNbCD5"
-      MYSQL_ROOT_PASSWORD: "StrongRootPassword123!"
-    ports:
-      - "3306"  # Use MySQL’s default port (don't remap to 3307)
-    networks:
-      - laravel
-    volumes:
-      - mysql_data:/var/lib/mysql
+   image: mysql:5.7
+   container_name: laravel_mysql
+   restart: unless-stopped
+   environment:
+    MYSQL_DATABASE: default
+    MYSQL_USER: mysql
+    MYSQL_PASSWORD: "6sXDBkduDCLwKaTXH9weDhEnwjNIWWsioosKPAVAKGbbolKwAlQ37y2GUzGNbCD5"
+    MYSQL_ROOT_PASSWORD: "StrongRootPassword123!"
+   ports:
+    - "3307:3306"  # Use MySQL’s default port
+   networks:
+    - laravel
+   volumes:
+    - mysql_data:/var/lib/mysql
+
+  nginx:
+   image: nginx:alpine
+   container_name: laravel_nginx
+   restart: unless-stopped
+  # Remove the ports mapping entirely
+   volumes:
+    - .:/var/www
+    - ./nginx:/etc/nginx/conf.d:ro
+   depends_on:
+    - app
+   networks:
+    - laravel
+
 networks:
   laravel:
     driver: bridge
+
 volumes:
   mysql_data:

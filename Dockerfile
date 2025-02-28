@@ -1,18 +1,35 @@
 # Use PHP 8.2 FPM base image
-FROM wyveo/nginx-php-fpm:php82
+FROM php:8.2-fpm
 
 # Set working directory
-WORKDIR /var/www/html
+WORKDIR /var/www
 
-# Copy application files
-COPY . /var/www/html
+# Install system dependencies and required PHP extensions
+RUN apt-get update && apt-get install -y \
+    git \
+    unzip \
+    curl \
+    libpng-dev \
+    libonig-dev \
+    libxml2-dev \
+    zip \
+    libzip-dev \
+    && docker-php-ext-configure zip \
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
-# Set proper permissions
-RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html/storage
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Expose port 80 for Heroku
-EXPOSE 80
+# Copy existing application files
+COPY . .
 
-# Start the application
-CMD ["nginx", "-g", "daemon off;"]
+# Ensure Laravel permissions are set correctly
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
+
+# Install PHP dependencies
+RUN composer install --no-dev --optimize-autoloader
+
+# Expose port 9000
+EXPOSE 9000
+
+CMD ["php-fpm"]
