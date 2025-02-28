@@ -2,31 +2,30 @@ version: '3'
 services:
   app:
     build: .
-      #    platform: linux/amd64 # line in question
     working_dir: /var/www/html
     volumes:
-        - ./:/var/www/html
-        - ./nginx:/etc/nginx/conf.d:ro
+      - ./:/var/www/html
+      - ./nginx:/etc/nginx/conf.d:ro
     depends_on:
       - mysql
     networks:
       - laravel
   mysql:
     image: mysql:5.7
-    platform: linux/amd64 # line in question
+    platform: linux/amd64
     container_name: laravel_mysql
     restart: unless-stopped
     environment:
-     MYSQL_DATABASE: default
-     MYSQL_USER: mysql
-     MYSQL_PASSWORD: "6sXDBkduDCLwKaTXH9weDhEnwjNIWWsioosKPAVAKGbbolKwAlQ37y2GUzGNbCD5"
-     MYSQL_ROOT_PASSWORD: "StrongRootPassword123!"
+      MYSQL_DATABASE: default
+      MYSQL_USER: mysql
+      MYSQL_PASSWORD: "6sXDBkduDCLwKaTXH9weDhEnwjNIWWsioosKPAVAKGbbolKwAlQ37y2GUzGNbCD5"
+      MYSQL_ROOT_PASSWORD: "StrongRootPassword123!"
     ports:
-     - "3307:3306"  # Use MySQL’s default port
+      - "3306"  # Use MySQL’s default port (don't remap to 3307)
     networks:
-    - laravel
+      - laravel
     volumes:
-     - mysql_data:/var/lib/mysql
+      - mysql_data:/var/lib/mysql
 networks:
   laravel:
     driver: bridge
