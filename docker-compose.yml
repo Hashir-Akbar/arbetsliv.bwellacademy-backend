@@ -24,7 +24,7 @@ services:
       MYSQL_PASSWORD: "6sXDBkduDCLwKaTXH9weDhEnwjNIWWsioosKPAVAKGbbolKwAlQ37y2GUzGNbCD5"
       MYSQL_ROOT_PASSWORD: "StrongRootPassword123!"
     ports:
-      - "5432:3306"
+      - "5433:5432"
     networks:
       - laravel
     volumes:
