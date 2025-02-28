@@ -7,10 +7,10 @@ services:
     volumes:
         - ./:/var/www/html
         - ./nginx:/etc/nginx/conf.d:ro
-    ports:
-        - 80:80
+    depends_on:
+      - mysql
     networks:
-        - api
+      - laravel
   mysql:
     image: mysql:5.7
       #platform: linux/amd64 # line in question
@@ -24,11 +24,11 @@ services:
     ports:
      - "3307:3306"  # Use MySQL’s default port
     networks:
-     - api
+    - laravel
     volumes:
      - mysql_data:/var/lib/mysql
 networks:
-  api:
+  laravel:
     driver: bridge
 volumes:
   mysql_data:
