@@ -23,7 +23,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Copy existing application files
 COPY . .
 
-# Set permissions
+# Ensure Laravel permissions are set correctly
 RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache
 
 # Install PHP dependencies
